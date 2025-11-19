@@ -21,24 +21,27 @@ namespace Common.Models
 
     public enum MissionTemplateSubType
     {
-        None,
-
         //Move
-        ChargerMove,
 
+        None,
+        ChargerMove,
         WaitMove,
         ResetMove,
         PositionMove,
         SourceMove,
+        SourceStopoverMove,
+        DestinationStopoverMove,
         StopoverMove,
         ElevatorWaitMove,
         ElevatorEnterMove,
         ElevatorExitMove,
         DestinationMove,
 
-        //Action Amkor
-        Pick,
+        //Action
 
+        SourceAction,
+        DestinationAction,
+        Pick,
         Drop,
         Wait,
         Charge,

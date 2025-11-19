@@ -12,6 +12,8 @@ namespace Common.Models
         TransportChemicalRecovery,
         TransportSlurrySupply,
         TransportSlurryRecovery,
+        TransportAicellomilimSupply,
+        TransportAicellomilimRecovery,
         Charge,
         Wait,
         Cancel,
