@@ -74,7 +74,7 @@ app.UseSwaggerUI(c =>
 });
 //}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
