@@ -495,7 +495,7 @@ namespace ResourceTest.Controllers
             //출발지이동
             if (i == 2) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -639,7 +639,7 @@ namespace ResourceTest.Controllers
             //2Drum_2(UR)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_2(UR)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a265")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -698,7 +698,7 @@ namespace ResourceTest.Controllers
             //2Drum_4(Door open)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_4(Door open)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a25d")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -753,7 +753,7 @@ namespace ResourceTest.Controllers
             //출발지
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -818,7 +818,7 @@ namespace ResourceTest.Controllers
             //목적지
             if (i == 3) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -888,7 +888,7 @@ namespace ResourceTest.Controllers
             //출발지
             if (i == 4) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -934,7 +934,7 @@ namespace ResourceTest.Controllers
             //SlurryCapSearch
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "CapSearch"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a26f")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -968,7 +968,7 @@ namespace ResourceTest.Controllers
             //Slurry_4(Door open)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "Slurry_4(Door open)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a270")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -990,7 +990,7 @@ namespace ResourceTest.Controllers
             //Slurry_2(UR)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "Slurry_2(UR)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a259")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1035,7 +1035,7 @@ namespace ResourceTest.Controllers
             //Slurry_2(UR)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "Slurry_2(UR)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a259")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1096,7 +1096,7 @@ namespace ResourceTest.Controllers
             //Slurry_4(Door open)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "Slurry_4(Door open)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a270")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1151,7 +1151,7 @@ namespace ResourceTest.Controllers
             ////출발지
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                             , null
-                                                                            , false
+                                                                            , true
                                                                             , createParameta("target", null)
                                                                             , createParameta(null, null)
                                                                             , createParameta(null, null)
@@ -1220,7 +1220,7 @@ namespace ResourceTest.Controllers
             //목적지
             if (i == 5) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1293,7 +1293,7 @@ namespace ResourceTest.Controllers
             //출발지이동
             if (i == 6) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1437,7 +1437,7 @@ namespace ResourceTest.Controllers
             //2Drum_2(UR)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_2(UR)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a265")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1496,7 +1496,7 @@ namespace ResourceTest.Controllers
             //2Drum_4(Door open)
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_4(Door open)"
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", "69006307ac8ad18ebac0a25d")
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1551,7 +1551,7 @@ namespace ResourceTest.Controllers
             //출발지
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
@@ -1616,7 +1616,7 @@ namespace ResourceTest.Controllers
             //목적지
             if (i == 7) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
-                                                                                    , false
+                                                                                    , true
                                                                                     , createParameta("target", null)
                                                                                     , createParameta(null, null)
                                                                                     , createParameta(null, null)
