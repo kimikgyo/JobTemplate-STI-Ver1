@@ -96,27 +96,27 @@ namespace ResourceTest.Controllers
             {
                 case 2:
                     jobTemplate.type = JobTemplateType.TRANSPORT_CHEMICAL_SUPPLY.ToString();
-                    return TransportChemicalSupply(jobTemplate, id);
+                    return TransportChemicalSupply(jobTemplate);
 
                 case 3:
                     jobTemplate.type = JobTemplateType.TRANSPORT_CHEMICAL_RECOVERY.ToString();
-                    return TransportChemicalRecovery(jobTemplate, id);
+                    return TransportChemicalRecovery(jobTemplate);
 
                 case 4:
                     jobTemplate.type = JobTemplateType.TRANSPORT_SLURRY_SUPPLY.ToString();
-                    return TransportSlurrySupply(jobTemplate, id);
+                    return TransportSlurrySupply(jobTemplate);
 
                 case 5:
                     jobTemplate.type = JobTemplateType.TRANSPORT_SLURRY_RECOVERY.ToString();
-                    return TransportSlurryRecovery(jobTemplate, id);
+                    return TransportSlurryRecovery(jobTemplate);
 
                 case 6:
                     jobTemplate.type = JobTemplateType.TRANSPORT_AICERO_SUPPLY.ToString();
-                    return TransportAicellomilimSupply(jobTemplate, id);
+                    return TransportAicellomilimSupply(jobTemplate);
 
                 case 7:
                     jobTemplate.type = JobTemplateType.TRANSPORT_AICERO_RECOVERY.ToString();
-                    return TransportAicellomilimRecovery(jobTemplate, id);
+                    return TransportAicellomilimRecovery(jobTemplate);
 
                 default:
                     return jobTemplate;
@@ -126,7 +126,6 @@ namespace ResourceTest.Controllers
         private void AddDefaultStiMoveMission(JobTemplate jobTemplate, int jobTemplateId, MissionTemplateSubType subType, bool isLock)
         {
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(
-                jobTemplateId,
                 MissionTemplateType.Move,
                 subType,
                 null,
@@ -143,7 +142,6 @@ namespace ResourceTest.Controllers
         {
             AddDefaultStiMoveMission(jobTemplate, id, MissionTemplateSubType.DestinationMove,true);
             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(
-                id,
                 MissionTemplateType.Action,
                 MissionTemplateSubType.Charge,
                 "Charge",
@@ -158,10 +156,10 @@ namespace ResourceTest.Controllers
             return jobTemplate;
         }
 
-        private JobTemplate TransportChemicalSupply(JobTemplate jobTemplate, int i)
+        private JobTemplate TransportChemicalSupply(JobTemplate jobTemplate)
         {
             //버퍼 대기 포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "IdlerUp"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf22")
@@ -171,7 +169,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             ////PIO 시작,롤러UP 실행
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOStart,RollerUp"
                                                                                     , "공급 액션(버퍼 PIO시작)"
                                                                                     , true
@@ -183,7 +181,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //출발지이동
-            if (i == 2) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
+             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -194,7 +192,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleAcquireStarted"])));
 
             ////Get 실행 (출발지->AGV)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "GetDrum"
                                                                                     , "공급 액션(버퍼 GET)"
                                                                                     , true
@@ -206,7 +204,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierInstalled"])));
 
             //PIO완료 위치 이동
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "IdlerDown"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf23")
@@ -216,7 +214,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO완료,롤러다운 실행
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOCompleted,Rollerdown"
                                                                                     , "공급 액션(버퍼 PIO완료)"
                                                                                     , true
@@ -228,7 +226,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleAcquireCompleted"])));
 
             //2DrumCapSearch
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "CapSearch_2Drum"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf2c")
@@ -238,7 +236,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDeparted"])
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             //드럼바코더리딩
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "Barcodereading,Capalignment"
                                                                                     , "공급 액션(드럼 BARCODE 읽기)"
                                                                                     , true
@@ -249,8 +247,8 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDepositStarted"])
                                                                                     , null));
             //,Cap정렬실행
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
-                                                                                    //, "Barcodereading,Capalignment"
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+                                                                                 //, "Barcodereading,Capalignment"
                                                                                     , "공급 액션(드럼 CAP 정렬)"
                                                                                     , true
                                                                                     , createParameta("type", "CDRUM")
@@ -261,7 +259,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //2Drum_4(Door open)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_4(Door open)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf00")
@@ -271,7 +269,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO 시작,DoorOpen
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOStart,DoorOpen"
                                                                                     , "공급 액션(설비 PIO 시작)"
                                                                                     , true
@@ -283,8 +281,8 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //목적지
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
-                                                                                    , null
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
+                                                                                 , null
                                                                                     , true
                                                                                     , createParameta("target", null)
                                                                                     , null
@@ -294,7 +292,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //설비바코드리딩
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "Barcodereading"
                                                                                     , "공급 액션(설비 BARCODE 읽기)"
                                                                                     , true
@@ -306,8 +304,8 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //드럼이동
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
-                                                                                    //, "PUTDrum"
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+                                                                                 //, "PUTDrum"
                                                                                     , "공급 액션(설비 DRUM 이동)"
                                                                                     , true
                                                                                     , createParameta("type", "CDRUM")
@@ -318,7 +316,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierRemoved"])));
 
             //2Drum_2(UR)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_2(UR)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf28")
@@ -328,7 +326,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDepositCompleted"])
                                                                                     , null));
             //UR작업[CapOpen,커플러체결]
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "URStart[CapOpen]"
                                                                                     , "공급 액션(설비 CAP 열기)"
                                                                                     , true
@@ -339,7 +337,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
 
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "URStart[CapOpen]"
                                                                                     , "공급 액션(설비 COUPLER 체결)"
                                                                                     , true
@@ -351,8 +349,8 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //2Drum_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
-                                                                                    , "2Drum_5(Door close)"
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+                                                                                 , "2Drum_5(Door close)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf1b")
                                                                                     , null
@@ -361,7 +359,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO완료,Close
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOCompleted"
                                                                                     , "공급 액션(설비 PIO 완료)"
                                                                                     , true
@@ -371,13 +369,33 @@ namespace ResourceTest.Controllers
                                                                                     , createParameta("drumKeyCode", null)
                                                                                     , null
                                                                                     , null));
+            //2Drum_4(Door open)
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+                                                                                    , "2Drum_4(Door open)"
+                                                                                    , true
+                                                                                    , createParameta("target", "699e7b3e841e04e64997cf00")
+                                                                                    , null
+                                                                                    , null
+                                                                                    , null
+                                                                                    , null
+                                                                                    , null));
+            //Parking_3
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+                                                                                    , "Parking_3"
+                                                                                    , true
+                                                                                    , createParameta("target", "699e7b3e841e04e64997cf26")
+                                                                                    , null
+                                                                                    , null
+                                                                                    , null
+                                                                                    , null
+                                                                                    , null));
             return jobTemplate;
         }
 
-        private JobTemplate TransportChemicalRecovery(JobTemplate jobTemplate, int i)
+        private JobTemplate TransportChemicalRecovery(JobTemplate jobTemplate)
         {
             //2Drum_4(Door open)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_4(Door open)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf00")
@@ -387,7 +405,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             //PIO 시작,DoorOpen
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOStart,Dooropen"
                                                                                     , "회수 액션(설비 PIO 시작)"
                                                                                     , true
@@ -399,7 +417,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //2Drum_2(UR)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_2(UR)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf28")
@@ -409,7 +427,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //커플러해제,CapClose
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "Capclose"
                                                                                     , "회수 액션(설비 COUPLER 분리)"
                                                                                     , true
@@ -420,7 +438,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
 
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                  //, "Capclose"
                                                                                  , "회수 액션(설비 CAP 닫기)"
                                                                                  , true
@@ -432,7 +450,7 @@ namespace ResourceTest.Controllers
                                                                                  , null));
 
             //출발지
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -443,7 +461,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             ////Get
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                          //, "GetDrum"
                                                                          , "회수 액션(설비DRUM이동)"
                                                                          , true
@@ -455,7 +473,7 @@ namespace ResourceTest.Controllers
                                                                          , createPostReport(reports, ["CarrierInstalled"])));
 
             //2Drum_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_5(Door close)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf1b")
@@ -465,7 +483,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //DoorClose,Pio완료
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "DoorClose,PIOCompleted"
                                                                                     , "회수 액션(설비 PIO 완료) "
                                                                                     , true
@@ -477,7 +495,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleAcquireCompleted"])));
 
             //버퍼대기포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_NoTrun"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf2d")
@@ -487,7 +505,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //버퍼대기포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "IdlerUp"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf22")
@@ -497,7 +515,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDeparted"])
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             ////PIO 시작,롤러UP
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOStart,RollerUp"
                                                                                     , "회수 액션(버퍼 PIO시작)"
                                                                                      , true
@@ -509,7 +527,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleDepositStarted"])));
 
             //목적지
-            if (i == 3) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
+             jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -519,7 +537,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PUT AGV -> Buffer
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PUTDrum"
                                                                                     , "회수 액션(버퍼 PUT)"
                                                                                     , true
@@ -531,7 +549,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierRemoved"])));
 
             //PIO완료포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "IdlerDown"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf23")
@@ -541,7 +559,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             ////PIO완료,롤러다운
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOCompleted,Rollerdown"
                                                                                     , "회수 액션(버퍼 PIO완료)"
                                                                                     , true
@@ -554,10 +572,10 @@ namespace ResourceTest.Controllers
             return jobTemplate;
         }
 
-        private JobTemplate TransportSlurrySupply(JobTemplate jobTemplate, int i)
+        private JobTemplate TransportSlurrySupply(JobTemplate jobTemplate)
         {
             //버퍼 대기 포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "IdlerUp"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf22")
@@ -567,7 +585,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             ////PIO 시작,롤러UP 실행
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOStart,RollerUp"
                                                                                     , "공급 액션(버퍼 PIO시작)"
                                                                                     , true
@@ -579,7 +597,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, null)));
 
             //출발지
-            if (i == 4) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -590,7 +608,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //Get
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "GETDrum"
                                                                                     , "공급 액션(버퍼 GET)"
                                                                                     , true
@@ -602,7 +620,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierInstalled"])));
 
             //PIO완료포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "IdlerDown"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf23")
@@ -613,7 +631,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             ///PIO완료,롤러다운
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOCompleted,Rollerdown"
                                                                                     , "공급 액션(버퍼 PIO완료)"
                                                                                     , true
@@ -625,7 +643,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleAcquireCompleted"])));
 
             //SlurryCapSearch
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "CapSearch"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf10")
@@ -635,7 +653,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDeparted"])
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             ////슬러리바코더리딩,Cap정렬
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "Barcodereading,Capalignment"
                                                                                     , "공급 액션(드럼 BARCODE 읽기)"
                                                                                     , true
@@ -646,7 +664,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDepositStarted"])
                                                                                     , null));
 
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                 //, "Barcodereading,Capalignment"
                                                                                 , "공급 액션(드럼 CAP 정렬)"
                                                                                 , true
@@ -658,7 +676,7 @@ namespace ResourceTest.Controllers
                                                                                 , null));
 
             //Slurry_4(Door open)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "Slurry_4(Door open)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf11")
@@ -668,7 +686,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO 시작,DoorOpen
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOStart,Dooropen"
                                                                                     , "공급 액션(설비 PIO 시작)"
                                                                                     , true
@@ -680,7 +698,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //목적지
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -690,7 +708,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //설비바코드리딩
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "Barcodereading"
                                                                                     , "공급 액션(설비 BARCODE 읽기)"
                                                                                     , true
@@ -702,7 +720,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //드럼이동
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PUTDrum"
                                                                                     , "공급 액션(설비 DRUM 이동)"
                                                                                     , true
@@ -713,8 +731,8 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["CarrierRemoved"])));
 
-            //Slurry_2(UR)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+                                                                                    //Slurry_2(UR)
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "Slurry_2(UR)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cefc")
@@ -723,8 +741,8 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPreReport(reports, ["VehicleDepositCompleted"])
                                                                                     , null));
-            //UR작업[CapOpen,커플러체결]
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+                                                                                    //UR작업[CapOpen,커플러체결]
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "URStart[CapOpen]"
                                                                                     , "공급 액션(설비 CAP 열기)"
                                                                                     , true
@@ -734,20 +752,19 @@ namespace ResourceTest.Controllers
                                                                                     , createParameta("drumKeyCode", null)
                                                                                     , null
                                                                                     , null));
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+                                                                                     //, "URStart[CapOpen]"
+                                                                                     , "공급 액션(설비 COUPLER 체결)"
+                                                                                     , true
+                                                                                     , createParameta("type", "SDRUM")
+                                                                                     , createParameta("linkedFacility", null)
+                                                                                     , createParameta("action", "PUT_ACTION_COUPLER_ATTACH")
+                                                                                     , createParameta("drumKeyCode", null)
+                                                                                     , null
+                                                                                     , null));
 
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
-                                                                                    //, "URStart[CapOpen]"
-                                                                                    , "공급 액션(설비 COUPLER 체결)"
-                                                                                    , true
-                                                                                    , createParameta("type", "SDRUM")
-                                                                                    , createParameta("linkedFacility", null)
-                                                                                    , createParameta("action", "PUT_ACTION_COUPLER_ATTACH")
-                                                                                    , createParameta("drumKeyCode", null)
-                                                                                    , null
-                                                                                    , null));
-
-            //Slurry_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+                                                                                    //Slurry_5(Door close)
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "Slurry_4(End)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf05")
@@ -757,7 +774,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO완료,Close
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOCompleted"
                                                                                     , "공급 액션(설비 PIO 완료)"
                                                                                     , true
@@ -770,10 +787,10 @@ namespace ResourceTest.Controllers
             return jobTemplate;
         }
 
-        private JobTemplate TransportSlurryRecovery(JobTemplate jobTemplate, int i)
+        private JobTemplate TransportSlurryRecovery(JobTemplate jobTemplate)
         {
             //Slurry_4(Door open)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "Slurry_4(Door open)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf11")
@@ -783,7 +800,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             //PIO 시작,DoorOpen
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOStart,DoorOpen"
                                                                                     , "회수 액션(설비 PIO 시작)"
                                                                                    , true
@@ -795,7 +812,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //Slurry_2(UR)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "Slurry_2(UR)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cefc")
@@ -805,7 +822,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             ////커플러해제,CapClose
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "CapClose"
                                                                                     , "회수 액션(설비 COUPLER 분리)"
                                                                                     , true
@@ -816,7 +833,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
 
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                               //, "CapClose"
                                                                               , "회수 액션(설비 CAP 닫기)"
                                                                               , true
@@ -828,7 +845,7 @@ namespace ResourceTest.Controllers
                                                                               , null));
 
             ////출발지
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                             , null
                                                                             , true
                                                                             , createParameta("target", null)
@@ -839,7 +856,7 @@ namespace ResourceTest.Controllers
                                                                             , null));
 
             ////Get
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                          //, "GetDrum"
                                                                          , "회수 액션(설비DRUM이동)"
                                                                          , true
@@ -852,17 +869,17 @@ namespace ResourceTest.Controllers
 
 
             //2Drum_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
-                                                                                    , "2Drum_5(Door close)"
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+                                                                                    , "Slurry_4(End)"
                                                                                     , true
-                                                                                    , createParameta("target", "699e7b3e841e04e64997cf1b")
+                                                                                    , createParameta("target", "699e7b3e841e04e64997cf05")
                                                                                     , null
                                                                                     , null
                                                                                     , null
                                                                                     , null
                                                                                     , null));
             //DoorClose,Pio완료
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "DoorClose,PIOCompleted"
                                                                                     , "회수 액션(설비 PIO 완료) "
                                                                                     , true
@@ -874,7 +891,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleAcquireCompleted"])));
 
             //버퍼대기포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "IdlerUp"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf22")
@@ -884,7 +901,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDeparted"])
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             ////PIO 시작,롤러UP
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOStart,RollerUp"
                                                                                     , "회수 액션(버퍼 PIO시작)"
                                                                                      , true
@@ -896,7 +913,7 @@ namespace ResourceTest.Controllers
                                                                                      , null));
 
             //목적지
-            if (i == 5) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -906,7 +923,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             ////PUT
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PUTDrum"
                                                                                     , "회수 액션(버퍼 PUT)"
                                                                                     , true
@@ -918,7 +935,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierRemoved"])));
 
             //PIO완료포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "IdlerDown"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf23")
@@ -928,7 +945,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO완료,롤러다운
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOCompleted,Rollerdown"
                                                                                     , "회수 액션(버퍼 PIO완료)"
                                                                                     , true
@@ -942,10 +959,10 @@ namespace ResourceTest.Controllers
             return jobTemplate;
         }
 
-        private JobTemplate TransportAicellomilimSupply(JobTemplate jobTemplate, int i)
+        private JobTemplate TransportAicellomilimSupply(JobTemplate jobTemplate)
         {
             //버퍼 대기 포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "IdlerUp"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf22")
@@ -955,7 +972,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             ////PIO 시작,롤러UP 실행
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOStart,RollerUp"
                                                                                     , "공급 액션(버퍼 PIO시작)"
                                                                                     , true
@@ -967,7 +984,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //출발지이동
-            if (i == 6) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -978,7 +995,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleAcquireStarted"])));
 
             ////Get 실행 (출발지->AGV)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "GetDrum"
                                                                                     , "공급 액션(버퍼 GET)"
                                                                                     , true
@@ -990,7 +1007,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierInstalled"])));
 
             //PIO완료 위치 이동
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "IdlerDown"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf23")
@@ -1000,7 +1017,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO완료,롤러다운 실행
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOCompleted,Rollerdown"
                                                                                     , "공급 액션(버퍼 PIO완료)"
                                                                                     , true
@@ -1012,7 +1029,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleAcquireCompleted"])));
 
             //2DrumCapSearch
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "CapSearch_2Drum"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf2c")
@@ -1022,7 +1039,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDeparted"])
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             //드럼바코더리딩
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "Barcodereading,Capalignment"
                                                                                     , "공급 액션(드럼 BARCODE 읽기)"
                                                                                     , true
@@ -1033,7 +1050,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDepositStarted"])
                                                                                     , null));
             //,Cap정렬실행
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "Barcodereading,Capalignment"
                                                                                     , "공급 액션(드럼 CAP 정렬)"
                                                                                     , true
@@ -1045,7 +1062,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //2Drum_4(Door open)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_4(Door open)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf00")
@@ -1055,7 +1072,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO 시작,DoorOpen
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOStart,DoorOpen"
                                                                                     , "공급 액션(설비 PIO 시작)"
                                                                                     , true
@@ -1067,7 +1084,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //목적지
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -1078,7 +1095,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //설비바코드리딩
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "Barcodereading"
                                                                                     , "공급 액션(설비 BARCODE 읽기)"
                                                                                     , true
@@ -1090,7 +1107,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //드럼이동
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PUTDrum"
                                                                                     , "공급 액션(설비 DRUM 이동)"
                                                                                     , true
@@ -1102,7 +1119,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierRemoved"])));
 
             //2Drum_2(UR)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_2(UR)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf28")
@@ -1112,7 +1129,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDepositCompleted"])
                                                                                     , null));
             //UR작업[CapOpen,커플러체결]
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "URStart[CapOpen]"
                                                                                     , "공급 액션(설비 CAP 열기)"
                                                                                     , true
@@ -1123,7 +1140,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
 
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "URStart[CapOpen]"
                                                                                     , "공급 액션(설비 COUPLER 체결)"
                                                                                     , true
@@ -1135,7 +1152,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //2Drum_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_5(Door close)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf1b")
@@ -1145,7 +1162,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO완료,Close
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOCompleted"
                                                                                     , "공급 액션(설비 PIO 완료)"
                                                                                     , true
@@ -1156,7 +1173,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //2Drum_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_4(Door open)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf00")
@@ -1166,7 +1183,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //2Drum_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "Parking_3"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf26")
@@ -1178,10 +1195,10 @@ namespace ResourceTest.Controllers
             return jobTemplate;
         }
 
-        private JobTemplate TransportAicellomilimRecovery(JobTemplate jobTemplate, int i)
+        private JobTemplate TransportAicellomilimRecovery(JobTemplate jobTemplate)
         {
             //2Drum_4(Door open)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_4(Door open)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf00")
@@ -1191,7 +1208,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             //PIO 시작,DoorOpen
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "PIOStart,DoorOpen"
                                                                                     , "회수 액션(설비 PIO 시작)"
                                                                                    , true
@@ -1203,7 +1220,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             //2Drum_2(UR)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_2(UR)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf28")
@@ -1213,7 +1230,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //커플러해제,CapClose
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "CapClose"
                                                                                     , "회수 액션(설비 COUPLER 분리)"
                                                                                     , true
@@ -1224,7 +1241,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
 
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                               //, "CapClose"
                                                                               , "회수 액션(설비 CAP 닫기)"
                                                                               , true
@@ -1236,7 +1253,7 @@ namespace ResourceTest.Controllers
                                                                               , null));
 
             ////출발지
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceMove
                                                                             , null
                                                                             , true
                                                                             , createParameta("target", null)
@@ -1247,7 +1264,7 @@ namespace ResourceTest.Controllers
                                                                             , null));
 
             ////Get
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                          //, "GetDrum"
                                                                          , "회수 액션(설비DRUM이동)"
                                                                          , true
@@ -1259,7 +1276,7 @@ namespace ResourceTest.Controllers
                                                                          , createPostReport(reports, ["CarrierInstalled"])));
 
             //2Drum_5(Door close)
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.SourceStopoverMove
                                                                                     , "2Drum_5(Door close)"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf1b")
@@ -1269,7 +1286,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //DoorClose,Pio완료
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.SourceAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.SourceAction
                                                                                     //, "DoorClose,PIOCompleted"
                                                                                     , "회수 액션(설비 PIO 완료) "
                                                                                     , true
@@ -1280,7 +1297,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , createPostReport(reports, ["VehicleAcquireCompleted"])));
             //버퍼대기포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "2Drum_NoTrun"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf2d")
@@ -1290,7 +1307,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //버퍼대기포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "IdlerUp"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf22")
@@ -1300,7 +1317,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPreReport(reports, ["VehicleDeparted"])
                                                                                     , createPostReport(reports, ["VehicleArrived"])));
             ////PIO 시작,롤러UP
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOStart,RollerUp"
                                                                                     , "회수 액션(버퍼 PIO시작)"
                                                                                      , true
@@ -1312,7 +1329,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["VehicleDepositStarted"])));
 
             //목적지
-            if (i == 7) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
+           jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
                                                                                     , true
                                                                                     , createParameta("target", null)
@@ -1323,7 +1340,7 @@ namespace ResourceTest.Controllers
                                                                                     , null));
 
             ////PUT
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PUTDrum"
                                                                                     , "회수 액션(버퍼 PUT)"
                                                                                     , true
@@ -1335,7 +1352,7 @@ namespace ResourceTest.Controllers
                                                                                     , createPostReport(reports, ["CarrierRemoved"])));
 
             //PIO완료포지션
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationStopoverMove
                                                                                     , "IdlerDown"
                                                                                     , true
                                                                                     , createParameta("target", "699e7b3e841e04e64997cf23")
@@ -1345,7 +1362,7 @@ namespace ResourceTest.Controllers
                                                                                     , null
                                                                                     , null));
             //PIO완료,롤러다운
-            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
+            jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Action, MissionTemplateSubType.DestinationAction
                                                                                     //, "PIOCompleted,Rollerdown"
                                                                                     , "회수 액션(버퍼 PIO완료)"
                                                                                     , true
@@ -1360,7 +1377,7 @@ namespace ResourceTest.Controllers
 
         private JobTemplate Transport(JobTemplate jobTemplate, int i)
         {
-            if (i == 6) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(i, MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
+            if (i == 6) jobTemplate.missionTemplates.Add(MissionTempleateCreateSTI(MissionTemplateType.Move, MissionTemplateSubType.DestinationMove
                                                                                     , null
                                                                                     , false
                                                                                     , createParameta("target", null)
@@ -1381,7 +1398,7 @@ namespace ResourceTest.Controllers
             return jobTemplate;
         }
 
-        private MissionTemplate MissionTempleateCreateSTI(int JobTemplateId, MissionTemplateType type, MissionTemplateSubType SubType, string name, bool islock
+        private MissionTemplate MissionTempleateCreateSTI( MissionTemplateType type, MissionTemplateSubType SubType, string name, bool islock
                                                           , Parameta parameta1, Parameta parameta2, Parameta parameta3, Parameta parameta4
                                                           , List<PreReport> preReports, List<PostReport> postReports)
         {
